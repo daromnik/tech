@@ -11,10 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+//Route::get('/contacts/', 'ContactsController@index');
+//Route::post('/contacts/', 'ContactsController@store');
 
+Route::get("/", "Users\AuthController@index");
 
-Route::get('/contacts/', 'ContactsController@index');
-Route::post('/contacts/', 'ContactsController@store');
+Route::post("/", "Users\AuthController@login");
+
+Route::get("/users/", "Users\UsersController@list")->name("userList");
+
+Route::get("/users/add/", "Users\UsersController@add");
+
+Route::post("/users/add/", "Users\UsersController@addPost");
