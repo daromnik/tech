@@ -21,8 +21,15 @@ Route::get("/", "Users\AuthController@index");
 
 Route::post("/", "Users\AuthController@login");
 
-Route::get("/users/", "Users\UsersController@list")->name("userList");
+Route::prefix("users")->group(function()
+{
+    Route::get("/", "Users\UsersController@list")->name("userList");
 
-Route::get("/users/add/", "Users\UsersController@add");
+    Route::get("add", "Users\UsersController@add")->name("userAdd");
 
-Route::post("/users/add/", "Users\UsersController@addPost");
+    Route::post("add", "Users\UsersController@addPost");
+
+    Route::get("update/{id}", "Users\UsersController@update")->name("userUpdate");
+
+    Route::post("update/{id}", "Users\UsersController@updatePost");
+});

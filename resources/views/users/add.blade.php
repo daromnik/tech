@@ -2,7 +2,11 @@
 
 @section("content")
 
-    <h1>Добавить нового пользователя</h1>
+    @if(isset($user))
+        <h1>Редкатировать пользователя</h1>
+    @else
+        <h1>Добавить нового пользователя</h1>
+    @endif
 
     @if ($errors->any())
         @foreach ($errors->all() as $error)
@@ -12,23 +16,40 @@
         @endforeach
     @endif
 
+    @if (session('err'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('err') }}
+        </div>
+    @endif
+
     <form method="post">
 
         {{ csrf_field() }}
 
+
         <div class="form-group">
             <label for="contact-name">First name</label>
-            <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First name">
+            <input type="text" value="{{ $user->first_name ?? old("first_name") }}" class="form-control" name="first_name" id="first_name" placeholder="First name">
         </div>
 
         <div class="form-group">
             <label for="contact-email">Last name</label>
-            <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name">
+            <input type="text" value="{{ $user->last_name ?? old("last_name") }}" class="form-control" name="last_name" id="last_name" placeholder="Last name">
         </div>
 
         <div class="form-group">
             <label for="contact-email">Email</label>
-            <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+            <input type="email" value="{{ $user->email ?? old("email") }}" class="form-control" name="email" id="email" placeholder="Email">
+        </div>
+
+        <div class="form-group">
+            <label for="contact-role">Role</label>
+            <select class="form-control" id="contact-role" name="role">
+                <option>Choose user's role</option>
+                @foreach($roles as $role)
+                    <option value="{{ $role->getRoleId() }}" @if(isset($userRole) && $userRole == $role->getRoleId()) selected @endif>{{ $role->name }}</option>
+                @endforeach
+            </select>
         </div>
 
         <div class="form-group">
