@@ -17,9 +17,14 @@
 //Route::get('/contacts/', 'ContactsController@index');
 //Route::post('/contacts/', 'ContactsController@store');
 
-Route::get("/", "Users\AuthController@index");
+Route::group([], function()
+{
+    Route::get("/", "Users\AuthController@index")->name("login");
 
-Route::post("/", "Users\AuthController@login");
+    Route::post("/", "Users\AuthController@login");
+
+    Route::get("/logout", "Users\AuthController@logout")->name("logout");
+});
 
 Route::prefix("users")->group(function()
 {
@@ -29,7 +34,39 @@ Route::prefix("users")->group(function()
 
     Route::post("add", "Users\UsersController@addPost");
 
-    Route::get("update/{id}", "Users\UsersController@update")->name("userUpdate");
+    Route::get("edit/{id}", "Users\UsersController@edit")->name("userEdit");
 
-    Route::post("update/{id}", "Users\UsersController@updatePost");
+    Route::post("edit/{id}", "Users\UsersController@editPost");
+
+    Route::get("delete/{id}", "Users\UsersController@delete")->name("userDelete");
+});
+
+Route::prefix("roles")->group(function()
+{
+    Route::get("/", "Users\RolesController@list")->name("roleList");
+
+    Route::get("add", "Users\RolesController@add")->name("roleAdd");
+
+    Route::post("add", "Users\RolesController@addPost");
+
+    Route::get("edit/{id}", "Users\RolesController@edit")->name("roleEdit");
+
+    Route::post("edit/{id}", "Users\RolesController@editPost");
+
+    Route::get("delete/{id}", "Users\RolesController@delete")->name("roleDelete");
+});
+
+Route::prefix("projects")->group(function()
+{
+    Route::get("/", "Projects\ProjectsController@list")->name("projectList");
+
+    Route::get("add", "Projects\ProjectsController@add")->name("projectAdd");
+
+    Route::post("add", "Projects\ProjectsController@addPost");
+
+    Route::get("edit/{id}", "Projects\ProjectsController@update")->name("projectEdit");
+
+    Route::post("edit/{id}", "Projects\ProjectsController@updatePost");
+
+    Route::get("delete/{id}", "Projects\ProjectsController@delete")->name("projectDelete");
 });

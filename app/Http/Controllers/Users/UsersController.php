@@ -55,7 +55,13 @@ class UsersController extends Controller
             ->withInput();
     }
 
-    public function update(int $id)
+    /**
+     * Страница с для редактирования пользователя
+     *
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(int $id)
     {
         $user = Sentinel::findById($id);
         $userRole = $user->roles()->first();
@@ -63,7 +69,14 @@ class UsersController extends Controller
         return view("users.add", ["user" => $user, "userRole" => $userRole->id, "roles" => $roles]);
     }
 
-    public function updatePost(Request $request, int $id)
+    /**
+     * Обработка запроса на обновление данных пользователя
+     *
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function editPost(Request $request, int $id)
     {
         $this->validate($request, [
             'first_name' => 'required|min:3|max:50',
@@ -99,8 +112,21 @@ class UsersController extends Controller
         {
             \Log::info($e->getMessage());
             return redirect()
-                ->route('userUpdate', ["id" => $id])
+                ->route('userEdit', ["id" => $id])
                 ->with("err", "Что-то пошло не так. Попробуйте снова или обратитесь к администратору сайта.");
         }
+    }
+
+    /**
+     * Удаление пользователя
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function delete(int $id)
+    {
+        $user = Sentinel::findById($id);
+        $user->delete();
+        return redirect()->route('userList');
     }
 }

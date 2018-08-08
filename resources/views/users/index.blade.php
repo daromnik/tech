@@ -2,32 +2,33 @@
 
 @section("content")
 
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <div class="alert alert-danger" role="alert">
-                {{ $error }}
-            </div>
-        @endforeach
-    @endif
-
-    @if(session('err'))
-        <div class="alert alert-warning" role="alert"> {{ session('err') }}</div>
-    @endif
-
     <form class="form-signin" method="post">
+
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger" role="alert">
+                    {{ $error }}
+                </div>
+            @endforeach
+        @endif
+
+        @if(session('err'))
+            <div class="alert alert-warning" role="alert"> {{ session('err') }}</div>
+        @endif
+
         {{ csrf_field() }}
         <img class="mb-4" src="https://bootstrap-4.ru/docs/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <h1 class="h3 mb-3 font-weight-normal">{{ __("messages.please_sign_in") }}</h1>
+        <label for="inputEmail" class="sr-only">{{ __("messages.email") }}</label>
+        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="{{ __("messages.email") }}" required autofocus>
+        <label for="inputPassword" class="sr-only">{{ __("messages.password") }}</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="{{ __("messages.password") }}" required>
         <div class="checkbox mb-3">
             <label>
-                <input type="checkbox" value="remember-me" name="remember"> Remember me
+                <input type="checkbox" value="remember-me" name="remember"> {{ __("messages.remember_me") }}
             </label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">{{ __("messages.signin") }}</button>
     </form>
 
 @endsection
