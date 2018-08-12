@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Users;
 use Sentinel;
 
@@ -39,13 +40,7 @@ class UsersController extends Controller
      */
     public function addPost(Request $request)
     {
-        $this->validate($request, [
-            'first_name' => 'required|min:3|max:50',
-            'last_name' => 'required|min:3|max:50',
-            'email' => 'email',
-            'role' => 'required|integer',
-            'password' => 'required|confirmed|min:6',
-        ]);
+        Users::validator($request->all())->validate();
 
         $user = Sentinel::registerAndActivate($request->all());
         $user->roles()->attach($request->role);
@@ -78,13 +73,7 @@ class UsersController extends Controller
      */
     public function editPost(Request $request, int $id)
     {
-        $this->validate($request, [
-            'first_name' => 'required|min:3|max:50',
-            'last_name' => 'required|min:3|max:50',
-            'email' => 'email',
-            'role' => 'required|integer',
-            'password' => 'nullable|confirmed|min:6',
-        ]);
+        Users::validator($request->all(), true)->validate();
 
         try
         {

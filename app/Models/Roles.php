@@ -7,13 +7,6 @@ use App\Models\Util;
 
 class Roles extends Model
 {
-    /**
-     * @var array
-     */
-    static public $validateProp = array(
-        'name' => 'required|min:3|max:15',
-        'slug' => 'required|min:3|max:15',
-    );
 
     /**
      * @param array $data

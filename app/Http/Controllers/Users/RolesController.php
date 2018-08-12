@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Users;
 use App\Models\Roles;
 use Route;
@@ -11,6 +12,20 @@ use Sentinel;
 
 class RolesController extends Controller
 {
+    /**
+     * Получение валидатора для входящего запроса на добавление/редактирование роли.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'name' => 'required|min:3|max:15',
+            'slug' => 'required|min:3|max:15',
+        ]);
+    }
+
     /**
      * Страница списка всех ролей пользователей
      *
@@ -29,10 +44,28 @@ class RolesController extends Controller
      */
     public function add()
     {
-        $permissions = array();
         $routes = Route::getRoutes()->getRoutesByName();
         $permissions = Roles::modifyRoutesData($routes);
         return view("users.roles.add", ["permissions" => $permissions]);
+    }
+
+    /**
+     * Метод для валидации формы и получние прав пользователя
+     *
+     * @param Request $request
+     * @return array
+     */
+    protected function validateAndGetPermissions(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        $permissions = array();
+        if(!empty($request->permissions))
+        {
+            $permissions = Roles::modifyPermissionsData($request->permissions);
+        }
+
+        return $permissions;
     }
 
     /**
@@ -43,9 +76,7 @@ class RolesController extends Controller
      */
     public function addPost(Request $request)
     {
-        $this->validate($request, Roles::$validateProp);
-
-        $permissions = Roles::modifyPermissionsData($request->permissions);
+        $permissions = $this->validateAndGetPermissions($request);
 
         Sentinel::getRoleRepository()->createModel()->create([
             "slug" => $request->slug,
@@ -82,9 +113,7 @@ class RolesController extends Controller
      */
     public function editPost(Request $request, int $id)
     {
-        $this->validate($request, Roles::$validateProp);
-
-        $permissions = Roles::modifyPermissionsData($request->permissions);
+        $permissions = $this->validateAndGetPermissions($request);
 
         $role = Sentinel::getRoleRepository()->findById($id);
         $role->update([
