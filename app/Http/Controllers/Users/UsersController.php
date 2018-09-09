@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Users;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use App\Models\Users;
+use App\Models\User;
+use App\Models\Role;
 use Sentinel;
 
 class UsersController extends Controller
@@ -17,7 +17,7 @@ class UsersController extends Controller
      */
     public function list()
     {
-        $users = Users::getAllUsersWithRoles();
+        $users = User::all();
         return view("users.list", ["users" => $users]);
     }
 
@@ -28,7 +28,7 @@ class UsersController extends Controller
      */
     public function add()
     {
-        $roles = Users::getAllRoles();
+        $roles = Role::all();
         return view("users.add", ["roles" => $roles]);
     }
 
@@ -40,7 +40,7 @@ class UsersController extends Controller
      */
     public function addPost(Request $request)
     {
-        Users::validator($request->all())->validate();
+        User::validator($request->all())->validate();
 
         $user = Sentinel::registerAndActivate($request->all());
         $user->roles()->attach($request->role);
@@ -58,9 +58,9 @@ class UsersController extends Controller
      */
     public function edit(int $id)
     {
-        $user = Sentinel::findById($id);
+        $user = User::find($id);
         $userRole = $user->roles()->first();
-        $roles = Users::getAllRoles();
+        $roles = Role::all();
         return view("users.add", ["user" => $user, "userRole" => $userRole->id, "roles" => $roles]);
     }
 
@@ -73,7 +73,7 @@ class UsersController extends Controller
      */
     public function editPost(Request $request, int $id)
     {
-        Users::validator($request->all(), true)->validate();
+        User::validator($request->all(), true)->validate();
 
         try
         {
@@ -84,11 +84,8 @@ class UsersController extends Controller
                 unset($data["password_confirmation"]);
             }
 
-            /**
-             * @param \Cartalyst\Sentinel\Users\EloquentUser $user
-             */
-            $user = Sentinel::findById($id);
-            Sentinel::update($user, $data);
+            $user = User::find($id);
+            $user->update($data);
 
             if(!$user->inRole($data["role"]))
             {
@@ -114,7 +111,7 @@ class UsersController extends Controller
      */
     public function delete(int $id)
     {
-        $user = Sentinel::findById($id);
+        $user = User::find($id);
         $user->delete();
         return redirect()->route('userList');
     }

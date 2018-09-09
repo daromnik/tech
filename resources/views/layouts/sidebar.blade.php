@@ -8,7 +8,7 @@
                 </a>
             </li>
             <li class="nav-item {{ Request::is('projects*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route("projectList") }}">
+                <a class="nav-link" href="{{ route("projects.index") }}">
                     <span data-feather="briefcase"></span>
                     {{ __("messages.projects") }}
                 </a>

@@ -2,11 +2,13 @@
 
 @section("content")
 
-    @if(isset($role))
-        <h1>{{ __("messages.edit_role") }}</h1>
-    @else
-        <h1>{{ __("messages.add_role") }}</h1>
-    @endif
+    <h1>
+        @if(isset($role))
+            {{ __("messages.edit_role") }}
+        @else
+            {{ __("messages.add_role") }}
+        @endif
+    </h1>
 
     @if ($errors->any())
         @foreach ($errors->all() as $error)

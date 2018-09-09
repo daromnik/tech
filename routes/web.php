@@ -56,7 +56,7 @@ Route::prefix("roles")->group(function()
     Route::get("delete/{id}", "Users\RolesController@delete")->name("roleDelete");
 });
 
-Route::prefix("projects")->group(function()
+/*Route::prefix("projects")->group(function()
 {
     Route::get("/", "Projects\ProjectsController@list")->name("projectList");
 
@@ -69,4 +69,6 @@ Route::prefix("projects")->group(function()
     Route::post("edit/{id}", "Projects\ProjectsController@updatePost");
 
     Route::get("delete/{id}", "Projects\ProjectsController@delete")->name("projectDelete");
-});
+});*/
+
+Route::resource("/projects", "Projects\ProjectController");

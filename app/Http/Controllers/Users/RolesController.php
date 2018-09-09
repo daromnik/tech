@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Users;
-use App\Models\Roles;
+use App\Models\User;
+use App\Models\Role;
 use Route;
 use Sentinel;
 
@@ -33,7 +33,7 @@ class RolesController extends Controller
      */
     public function list()
     {
-        $roles = Users::getAllRoles();
+        $roles = User::getAllRoles();
         return view("users.roles.list", ["roles" => $roles]);
     }
 
@@ -45,7 +45,7 @@ class RolesController extends Controller
     public function add()
     {
         $routes = Route::getRoutes()->getRoutesByName();
-        $permissions = Roles::modifyRoutesData($routes);
+        $permissions = Role::modifyRoutesData($routes);
         return view("users.roles.add", ["permissions" => $permissions]);
     }
 
@@ -62,7 +62,7 @@ class RolesController extends Controller
         $permissions = array();
         if(!empty($request->permissions))
         {
-            $permissions = Roles::modifyPermissionsData($request->permissions);
+            $permissions = Role::modifyPermissionsData($request->permissions);
         }
 
         return $permissions;
@@ -99,7 +99,7 @@ class RolesController extends Controller
     {
         $role = Sentinel::getRoleRepository()->findById($id);
         $routes = Route::getRoutes()->getRoutesByName();
-        $permissions = Roles::modifyRoutesData($routes);
+        $permissions = Role::modifyRoutesData($routes);
 
         return view("users.roles.add", ["role" => $role, "permissions" => $permissions]);
     }

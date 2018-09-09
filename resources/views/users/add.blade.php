@@ -2,11 +2,13 @@
 
 @section("content")
 
-    @if(isset($user))
-        <h1>{{ __("messages.edit_user") }}</h1>
-    @else
-        <h1>{{ __("messages.add_user") }}</h1>
-    @endif
+    <h1>
+        @if(isset($user))
+            {{ __("messages.edit_user") }}
+        @else
+            {{ __("messages.add_user") }}
+        @endif
+    </h1>
 
     @if ($errors->any())
         @foreach ($errors->all() as $error)
