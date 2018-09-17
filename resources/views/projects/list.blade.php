@@ -10,13 +10,7 @@
         <thead class="thead-dark">
         <tr>
             <th scope="col">{{ __("messages.domain") }}</th>
-            <th scope="col">{{ __("messages.indicators") }}</th>
-            <th scope="col">{{ __("messages.level") }}</th>
             <th scope="col">{{ __("messages.queries") }}</th>
-            <th scope="col">{{ __("messages.dynamics_queries") }}</th>
-            <th scope="col">{{ __("messages.dynamics_visibility") }}</th>
-            <th scope="col">{{ __("messages.year") }}/{{ __("messages.month") }}</th>
-            <th scope="col">{{ __("messages.report_date") }}</th>
             <th scope="col"></th>
         </tr>
         </thead>
@@ -24,13 +18,11 @@
         @foreach($projects as $project)
             <tr>
                 <th>{{ $project->domain }}</th>
-                <td>indi</td>
-                <td>{{ $project->level }}</td>
-                <td>queries</td>
-                <td>dynamics queries</td>
-                <td>dynamics visibility</td>
-                <td>year / month</td>
-                <td>report date</td>
+                <td>
+                    <a href="{{ route("groups.show", ["id" => $project->id]) }}">
+                        <i data-feather="list" title="{{ __("messages.edit") }}"></i>
+                    </a>
+                </td>
                 <td>
                     <a href="{{ route("projects.edit", ["id" => $project->id]) }}">
                         <i data-feather="edit" title="{{ __("messages.edit") }}"></i>

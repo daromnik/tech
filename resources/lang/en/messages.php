@@ -9,10 +9,12 @@ return [
     'logout' => 'Log-out',
     'edit' => 'Edit',
     'delete' => 'Delete',
+    'settings' => 'Settings',
 
     'please_sign_in' => 'Please sign in',
     'remember_me' => 'Remember me',
 
+    // users
     'edit_user' => 'Edit user',
     'add_user' => 'Add new user',
     'list_users' => 'List of users',
@@ -27,12 +29,14 @@ return [
     'submit' => 'Submit',
     'cancel' => 'Cancel',
 
+    // roles
     'roles' => 'Roles',
     'list_roles' => 'List of user\'s roles',
     'edit_role' => 'Edit role',
     'add_role' => 'Add new role',
     'permissions' => 'Permissions',
 
+    // projects
     'projects' => 'Projects',
     'edit_project' => 'Edit project',
     'add_project' => 'Add new project',
@@ -73,4 +77,15 @@ return [
 
     'title' => 'Title',
     'code' => 'Code',
+
+    // groups/queries
+    'list_queries' => 'List Queries',
+    'add_group' => 'Add Group',
+    'url_promoted_page' => 'URL of the promoted page',
+    'cost' => 'Cost',
+    'value_request' => 'Value of the request',
+
+    //settings
+    'search_engine' => 'Search engine',
+    'proxy' => 'Proxy',
 ];

@@ -72,3 +72,6 @@ Route::prefix("roles")->group(function()
 });*/
 
 Route::resource("/projects", "Projects\ProjectController");
+Route::resource("/groups", "Projects\GroupController");
+
+Route::get("/settings", "Settings\SettingsController@index")->name("settings");

@@ -33,7 +33,7 @@ class RolesController extends Controller
      */
     public function list()
     {
-        $roles = User::getAllRoles();
+        $roles = Role::all();
         return view("users.roles.list", ["roles" => $roles]);
     }
 

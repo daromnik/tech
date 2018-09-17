@@ -8,7 +8,7 @@ use Cartalyst\Sentinel\Roles\EloquentRole;
 class Role extends EloquentRole
 {
     /**
-     * Получить все пользователей принадлежащих к данной роли
+     * Получить всех пользователей принадлежащих к данной роли
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -17,6 +17,11 @@ class Role extends EloquentRole
         return $this->belongsToMany("App\Models\User", "role_users");
     }
 
+    /**
+     * Метод для получения
+     *
+     * @return array
+     */
     public static function getRoleUsers()
     {
         $roleUsers = array();

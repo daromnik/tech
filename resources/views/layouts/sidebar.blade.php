@@ -28,6 +28,12 @@
                     </a>
                 </li>
             @endif
+            <li class="nav-item {{ Request::is('settings*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route("settings") }}">
+                    <span data-feather="settings"></span>
+                    {{ __("messages.settings") }}
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route("logout") }}">
                     <span data-feather="log-out"></span>

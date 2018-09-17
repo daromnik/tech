@@ -1,5 +1,9 @@
 let mix = require('laravel-mix');
 
+mix.webpackConfig({
+    devtool: "inline-source-map"
+});
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management

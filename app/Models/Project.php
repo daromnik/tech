@@ -12,11 +12,11 @@ class Project extends Model
     /**
      *
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function manager()
+    public function groups()
     {
-        return $this->hasOne("App\Models\User", "manager_id");
+        return $this->hasMany("App\Models\Group");
     }
 
     /**
