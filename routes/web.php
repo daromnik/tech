@@ -56,22 +56,9 @@ Route::prefix("roles")->group(function()
     Route::get("delete/{id}", "Users\RolesController@delete")->name("roleDelete");
 });
 
-/*Route::prefix("projects")->group(function()
-{
-    Route::get("/", "Projects\ProjectsController@list")->name("projectList");
-
-    Route::get("add", "Projects\ProjectsController@add")->name("projectAdd");
-
-    Route::post("add", "Projects\ProjectsController@addPost");
-
-    Route::get("edit/{id}", "Projects\ProjectsController@update")->name("projectEdit");
-
-    Route::post("edit/{id}", "Projects\ProjectsController@updatePost");
-
-    Route::get("delete/{id}", "Projects\ProjectsController@delete")->name("projectDelete");
-});*/
-
 Route::resource("/projects", "Projects\ProjectController");
 Route::resource("/groups", "Projects\GroupController");
+
+Route::post("/queries/load", "Projects\QueryController@loadQueries")->name("loadQueries");
 
 Route::get("/settings", "Settings\SettingsController@index")->name("settings");

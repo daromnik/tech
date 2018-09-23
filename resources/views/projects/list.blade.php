@@ -20,6 +20,7 @@
                 <th>{{ $project->domain }}</th>
                 <td>
                     <a href="{{ route("groups.show", ["id" => $project->id]) }}">
+                        {{ $project->queries()->count() }}
                         <i data-feather="list" title="{{ __("messages.edit") }}"></i>
                     </a>
                 </td>

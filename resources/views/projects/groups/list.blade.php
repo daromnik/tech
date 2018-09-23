@@ -7,15 +7,15 @@
     <p><button type="button" data-toggle="modal" data-target="#addGroup-0" class="btn btn-primary">{{ __("messages.add_group") }}</button></p>
 
     @foreach($groups as $group)
-        <table class="table table-hover">
+        <table class="table table-hover table-sm">
             <thead class="thead-dark">
             <tr>
-                <th scope="col">{{ $group->name }}</th>
-                <th scope="col">{{ __("messages.url_promoted_page") }}</th>
-                <th scope="col">Title</th>
-                <th scope="col">Description</th>
-                <th scope="col">H1</th>
-                <th scope="col">{{ __("messages.cost") }}</th>
+                <th scope="col"  class="align-middle">{{ $group->name }}</th>
+                <th scope="col" class="align-middle">URL</th>
+                <th scope="col"  class="align-middle">Title</th>
+                <th scope="col"  class="align-middle">Description</th>
+                <th scope="col"  class="align-middle">H1</th>
+                <th scope="col"  class="align-middle">{{ __("messages.cost") }}</th>
                 <th scope="col">{{ __("messages.value_request") }}</th>
                 <th scope="col">
                     <form action="{{ route("groups.destroy", $group) }}" method="post">
@@ -35,12 +35,38 @@
             </thead>
 
             <tbody>
-            <?/*@foreach($groups as $group)
+            @foreach($group->queries()->get() as $query)
                 <tr>
-                    <th></th>
+                    <th>{{ $query->name }}</th>
+                    <td>{{ $query->url }}</td>
+                    <td>{{ $query->title }}</td>
+                    <td>{{ $query->description }}</td>
+                    <td>{{ $query->h1 }}</td>
+                    <td>{{ $query->cost }}</td>
+                    <td>{{ $query->value_query }}</td>
                     <td></td>
                 </tr>
-            @endforeach*/?>
+            @endforeach
+                <tr class="table-secondary">
+                    <th colspan="8" class="pl-2">
+                        <form action="{{ route("loadQueries") }}" method="post" enctype="multipart/form-data">
+
+                            {{  csrf_field() }}
+                            <input type="hidden" name="group_id" value="{{ $group->id }}">
+
+                            <div class="form-row">
+                                <div class="custom-file col-11">
+                                    <input type="file" class="custom-file-input" id="queryFile" name="queryFile">
+                                    <label class="custom-file-label" for="queryFile">File with Queries (xls, xlsx)</label>
+                                </div>
+
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary">Load</button>
+                                </div>
+                            </div>
+                        </form>
+                    </th>
+                </tr>
             </tbody>
         </table>
 

@@ -83,7 +83,7 @@ return [
     'add_group' => 'Add Group',
     'url_promoted_page' => 'URL of the promoted page',
     'cost' => 'Cost',
-    'value_request' => 'Value of the request',
+    'value_request' => 'Request\'s value',
 
     //settings
     'search_engine' => 'Search engine',
