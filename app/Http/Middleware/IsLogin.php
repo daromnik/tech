@@ -16,7 +16,7 @@ class IsLogin
      */
     public function handle($request, Closure $next)
     {
-        if(Sentinel::check())
+        /*if(Sentinel::check())
         {
             if($request->is("/"))
             {
@@ -38,6 +38,6 @@ class IsLogin
                 return redirect()->route("login");
             }
 
-        }
+        }*/
     }
 }

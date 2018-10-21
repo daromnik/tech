@@ -4,7 +4,7 @@
 
     <h1>{{ __("messages.list_users") }}</h1>
 
-    <p><a href="{{ route("userAdd") }}" class="btn btn-primary active" role="button" aria-pressed="true">{{ __("messages.add_user") }}</a></p>
+    <p><a href="{{ route("users.create") }}" class="btn btn-primary active" role="button" aria-pressed="true">{{ __("messages.add_user") }}</a></p>
 
     <table class="table table-sm table-hover">
         <thead class="thead-dark">
@@ -18,12 +18,12 @@
         <tbody>
         @foreach($users as $user)
             <tr>
-                <th>{{ $user->first_name }} {{ $user->last_name }}</th>
+                <th>{{ $user->name }}</th>
                 <td>{{ $user->email }}</td>
-                <td>{{ $user->roles->first()->name }}</td>
+                <td>{{ $roles[$user->role_id] }}</td>
                 <td>
-                    <a href="{{ route("userEdit", ["id" => $user->id]) }}"><i data-feather="edit" title="{{ __("messages.edit") }}"></i></a>
-                    <a href="{{ route("userDelete", ["id" => $user->id]) }}"><i data-feather="x-square" title="{{ __("messages.delete") }}"></i></a>
+                    <a href="{{ route("users.edit", ["id" => $user->id]) }}"><i data-feather="edit" title="{{ __("messages.edit") }}"></i></a>
+                    <a href="{{ route("users.destroy", ["id" => $user->id]) }}"><i data-feather="x-square" title="{{ __("messages.delete") }}"></i></a>
                 </td>
             </tr>
         @endforeach

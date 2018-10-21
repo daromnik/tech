@@ -3,25 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\Validator;
-use Cartalyst\Sentinel\Users\EloquentUser;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends EloquentUser
+class User extends Authenticatable
 {
-    /**
-     * Получение валидатора для входящего запроса на добавление/редактирование пользователя.
-     *
-     * @param  array $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    static public function validator(array $data, $edit = false)
-    {
-        return Validator::make($data, [
-            'first_name' => 'required|min:3|max:50',
-            'last_name' => 'required|min:3|max:50',
-            'email' => 'email',
-            'role' => 'required|integer',
-            'password' => $edit ? 'nullable|confirmed|min:6' : 'required|confirmed|min:6',
-        ]);
-    }
+    use Notifiable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'email', 'password', 'role_id'
+    ];
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
 }

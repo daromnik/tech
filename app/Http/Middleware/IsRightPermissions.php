@@ -18,7 +18,7 @@ class IsRightPermissions
      */
     public function handle($request, Closure $next)
     {
-        if(!$request->is("/"))
+        /*if(!$request->is("/"))
         {
             $path = Util::strReplaceSlashToDot($request->route()->uri);
             if (Sentinel::hasAccess($path))
@@ -33,7 +33,7 @@ class IsRightPermissions
         else
         {
             return $next($request);
-        }
+        }*/
 
     }
 }

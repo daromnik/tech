@@ -85,6 +85,18 @@ return [
     'cost' => 'Cost',
     'value_request' => 'Request\'s value',
 
+    //indicators
+    'indicators' => 'Indicators',
+    'add_indicator' => 'Add Indicator',
+    'class' => 'Class',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+
     //settings
     'search_engine' => 'Search engine',
     'proxy' => 'Proxy',

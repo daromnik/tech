@@ -1,32 +1,19 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::get("/", "Users\AuthController@index")->name("login");
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-//Route::get('/contacts/', 'ContactsController@index');
-//Route::post('/contacts/', 'ContactsController@store');
+//Route::post("/", "Users\AuthController@login");
 
-Route::group([], function()
-{
-    Route::get("/", "Users\AuthController@index")->name("login");
+//Route::get("/logout", "Users\AuthController@logout")->name("logout");
 
-    Route::post("/", "Users\AuthController@login");
 
-    Route::get("/logout", "Users\AuthController@logout")->name("logout");
-});
+Route::post('/login', 'Users\AuthController@login');
+Route::post('/logout', 'Users\AuthController@logout')->name('logout');
+Route::post('/register', 'Users\UsersController@register')->name('register');;
 
-Route::prefix("users")->group(function()
+
+// FIXME: переделать на стандартный resourse laravel
+/*oute::prefix("users")->group(function()
 {
     Route::get("/", "Users\UsersController@list")->name("userList");
 
@@ -39,8 +26,11 @@ Route::prefix("users")->group(function()
     Route::post("edit/{id}", "Users\UsersController@editPost");
 
     Route::get("delete/{id}", "Users\UsersController@delete")->name("userDelete");
-});
+});*/
 
+Route::resource("/users", "Users\UsersController");
+
+// FIXME: переделать на стандартный resourse laravel
 Route::prefix("roles")->group(function()
 {
     Route::get("/", "Users\RolesController@list")->name("roleList");
@@ -57,8 +47,13 @@ Route::prefix("roles")->group(function()
 });
 
 Route::resource("/projects", "Projects\ProjectController");
+
 Route::resource("/groups", "Projects\GroupController");
+
+Route::resource("/indicators", "Projects\IndicatorController");
 
 Route::post("/queries/load", "Projects\QueryController@loadQueries")->name("loadQueries");
 
 Route::get("/settings", "Settings\SettingsController@index")->name("settings");
+
+//Auth::routes();

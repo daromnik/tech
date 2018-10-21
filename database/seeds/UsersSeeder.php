@@ -12,11 +12,10 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\User::class, 10)
-            ->create()
-            ->each(function ($user) {
-                $user->roles()->sync($this->getRoleId());
-            });
+        factory(App\Models\User::class, 1)
+            ->create([
+                'role_id' => $this->getRoleId(),
+            ]);
     }
 
     private function getRoleId()

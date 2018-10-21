@@ -20,7 +20,7 @@
 
     <form method="post" action="@if(isset($project)){{ route("projects.update", $project) }}@else{{ route("projects.store") }}@endif">
 
-        {{ csrf_field() }}
+        @csrf
 
         @if(isset($project))
             {{ method_field("PUT") }}

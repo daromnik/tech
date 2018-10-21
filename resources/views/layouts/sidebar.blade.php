@@ -13,21 +13,26 @@
                     {{ __("messages.projects") }}
                 </a>
             </li>
-
+            <li class="nav-item {{ Request::is('indicators*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route("indicators.index") }}">
+                    <span data-feather="info"></span>
+                    {{ __("messages.indicators") }}
+                </a>
+            </li>
             <li class="nav-item {{ Request::is('users*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route("userList") }}">
+                <a class="nav-link" href="{{ route("users.index") }}">
                     <span data-feather="users"></span>
                     {{ __("messages.users") }}
                 </a>
             </li>
-            @if(Sentinel::inRole("admin"))
-                <li class="nav-item {{ Request::is('roles*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route("roleList") }}">
-                        <span data-feather="user-check"></span>
-                        {{ __("messages.roles") }}
-                    </a>
-                </li>
-            @endif
+            {{--@if(Sentinel::inRole("admin"))--}}
+                {{--<li class="nav-item {{ Request::is('roles*') ? 'active' : '' }}">--}}
+                    {{--<a class="nav-link" href="{{ route("roleList") }}">--}}
+                        {{--<span data-feather="user-check"></span>--}}
+                        {{--{{ __("messages.roles") }}--}}
+                    {{--</a>--}}
+                {{--</li>--}}
+            {{--@endif--}}
             <li class="nav-item {{ Request::is('settings*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route("settings") }}">
                     <span data-feather="settings"></span>

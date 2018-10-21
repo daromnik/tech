@@ -10,33 +10,19 @@
         @endif
     </h1>
 
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <div class="alert alert-danger" role="alert">
-                {{ $error }}
-            </div>
-        @endforeach
-    @endif
+    @include("layouts.error")
 
-    @if (session('err'))
-        <div class="alert alert-danger" role="alert">
-            {{ session('err') }}
-        </div>
-    @endif
+    <form method="post" action="@if(isset($user)){{ route("users.update", $user) }}@else{{ route("register") }}@endif">
 
-    <form method="post">
+        @csrf
 
-        {{ csrf_field() }}
-
+        @if(isset($user))
+            {{ method_field("PUT") }}
+        @endif
 
         <div class="form-group">
             <label for="contact-name">{{ __("messages.first_name") }}</label>
-            <input type="text" value="{{ $user->first_name ?? old("first_name") }}" class="form-control" name="first_name" id="first_name" placeholder="{{ __("messages.first_name") }}">
-        </div>
-
-        <div class="form-group">
-            <label for="contact-email">{{ __("messages.last_name") }}</label>
-            <input type="text" value="{{ $user->last_name ?? old("last_name") }}" class="form-control" name="last_name" id="last_name" placeholder="{{ __("messages.last_name") }}">
+            <input type="text" value="{{ $user->name ?? old("name") }}" class="form-control" name="name" id="name" placeholder="{{ __("messages.first_name") }}">
         </div>
 
         <div class="form-group">
@@ -46,10 +32,10 @@
 
         <div class="form-group">
             <label for="contact-role">{{ __("messages.role") }}</label>
-            <select class="form-control" id="contact-role" name="role">
+            <select class="form-control" id="contact-role" name="role_id" required>
                 <option>{{ __("messages.choose_user_role") }}</option>
                 @foreach($roles as $role)
-                    <option value="{{ $role->getRoleId() }}" @if(isset($userRole) && $userRole == $role->getRoleId()) selected @endif>{{ $role->name }}</option>
+                    <option value="{{ $role->id }}" @if(isset($user) && $user->role_id == $role->id) selected @endif>{{ $role->name }}</option>
                 @endforeach
             </select>
         </div>

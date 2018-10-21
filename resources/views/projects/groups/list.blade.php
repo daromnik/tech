@@ -6,16 +6,18 @@
 
     <p><button type="button" data-toggle="modal" data-target="#addGroup-0" class="btn btn-primary">{{ __("messages.add_group") }}</button></p>
 
+    @include("layouts.error")
+
     @foreach($groups as $group)
         <table class="table table-hover table-sm">
             <thead class="thead-dark">
             <tr>
-                <th scope="col"  class="align-middle">{{ $group->name }}</th>
+                <th scope="col" class="align-middle">{{ $group->name }}</th>
                 <th scope="col" class="align-middle">URL</th>
-                <th scope="col"  class="align-middle">Title</th>
-                <th scope="col"  class="align-middle">Description</th>
-                <th scope="col"  class="align-middle">H1</th>
-                <th scope="col"  class="align-middle">{{ __("messages.cost") }}</th>
+                <th scope="col" class="align-middle">Title</th>
+                <th scope="col" class="align-middle">Description</th>
+                <th scope="col" class="align-middle">H1</th>
+                <th scope="col" class="align-middle">{{ __("messages.cost") }}</th>
                 <th scope="col">{{ __("messages.value_request") }}</th>
                 <th scope="col">
                     <form action="{{ route("groups.destroy", $group) }}" method="post">

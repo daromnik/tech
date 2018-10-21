@@ -2,117 +2,138 @@
 
 namespace App\Http\Controllers\Users;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
-use Sentinel;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class UsersController extends Controller
 {
+    use RegistersUsers;
+
     /**
-     * Страница списка всех пользователей
+     * Get a validator for an incoming registration request.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function list()
+    protected function validator(array $data, $edit = false)
     {
-        $users = User::all();
-        return view("users.list", ["users" => $users]);
+        return Validator::make($data, [
+            'name' => 'required|string|min:3|max:100',
+            'email' => 'required|string|email|max:100',
+            'role_id' => 'required|integer',
+            'password' => $edit ? 'nullable|string|confirmed|min:6' : 'required|string|confirmed|min:6',
+        ]);
     }
 
     /**
-     * Страница формы добавления пользователя
+     * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\Response
      */
-    public function add()
+    public function index()
+    {
+        $users = User::all();
+        $roles = Role::all();
+
+        $rolesArr = $roles->mapWithKeys(function ($item) {
+            return [$item["id"] => $item["name"]];
+        });
+
+        return view("users.list", ["users" => $users, "roles" => $rolesArr]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
         $roles = Role::all();
         return view("users.add", ["roles" => $roles]);
     }
 
     /**
-     * Обработка данных после заполнения формы добавления пользователя
+     * Handle a registration request for the application.
      *
-     * @param Request $request
-     * @return $this
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function addPost(Request $request)
+    public function register(Request $request)
     {
-        User::validator($request->all())->validate();
+        $this->validator($request->all())->validate();
 
-        $user = Sentinel::registerAndActivate($request->all());
-        $user->roles()->attach($request->role);
+        $user = User::create($request->all());
 
-        return redirect()
-            ->route('userList')
-            ->withInput();
+        event(new Registered($user));
+
+        return redirect()->route("users.index");
     }
 
     /**
-     * Страница с для редактирования пользователя
+     * Create a new user instance after a valid registration.
      *
-     * @param int $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param  array  $data
+     * @return \App\Models\User
      */
-    public function edit(int $id)
+//    protected function create(array $data)
+//    {
+//        return User::create([
+//            'name' => $data['name'],
+//            'email' => $data['email'],
+//            'password' => Hash::make($data['password']),
+//        ]);
+//    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(User $user)
     {
-        $user = User::find($id);
-        $userRole = $user->roles()->first();
         $roles = Role::all();
-        return view("users.add", ["user" => $user, "userRole" => $userRole->id, "roles" => $roles]);
+        return view("users.add", ["user" => $user, "roles" => $roles]);
     }
 
     /**
-     * Обработка запроса на обновление данных пользователя
+     * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
      */
-    public function editPost(Request $request, int $id)
+    public function update(Request $request, User $user)
     {
-        User::validator($request->all(), true)->validate();
+        $this->validator($request->all(), true)->validate();
 
-        try
+        $data = $request->post();
+        if(empty($data["password"]))
         {
-            $data = $request->post();
-            if(empty($data["password"]))
-            {
-                unset($data["password"]);
-                unset($data["password_confirmation"]);
-            }
-
-            $user = User::find($id);
-            $user->update($data);
-
-            if(!$user->inRole($data["role"]))
-            {
-                $user->roles()->sync([$data["role"]]);
-            }
-
-            return redirect()->route('userList');
+            unset($data["password"]);
+            unset($data["password_confirmation"]);
         }
-        catch (\Exception $e)
-        {
-            \Log::info($e->getMessage());
-            return redirect()
-                ->route('userEdit', ["id" => $id])
-                ->with("err", "Что-то пошло не так. Попробуйте снова или обратитесь к администратору сайта.");
-        }
+
+        $user->update($data);
+
+        return redirect()->route("users.index");
     }
 
     /**
-     * Удаление пользователя
+     * Remove the specified resource from storage.
      *
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
      */
-    public function delete(int $id)
+    public function destroy(User $user)
     {
-        $user = User::find($id);
         $user->delete();
-        return redirect()->route('userList');
+        return redirect()->back();
     }
 }

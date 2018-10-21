@@ -18,8 +18,8 @@ class ExampleTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testException()
-    {
-        $this->expectException(Exception::class);
-    }
+//    public function testException()
+//    {
+//        $this->expectException(Exception::class);
+//    }
 }
