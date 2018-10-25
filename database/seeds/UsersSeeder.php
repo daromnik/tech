@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\Role;
 
 class UsersSeeder extends Seeder
 {
@@ -12,14 +11,7 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\User::class, 1)
-            ->create([
-                'role_id' => $this->getRoleId(),
-            ]);
-    }
-
-    private function getRoleId()
-    {
-        return Role::all("id")->random()->id;
+        factory(App\Models\User::class, 3)
+            ->create();
     }
 }

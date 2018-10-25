@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Sentinel;
+use Illuminate\Support\Facades\Auth;
 
 class IsLogin
 {
@@ -16,11 +16,11 @@ class IsLogin
      */
     public function handle($request, Closure $next)
     {
-        /*if(Sentinel::check())
+        if(Auth::check())
         {
             if($request->is("/"))
             {
-                return redirect()->route("userList");
+                return redirect()->route("users.index");
             }
             else
             {
@@ -29,7 +29,7 @@ class IsLogin
         }
         else
         {
-            if($request->is("/"))
+            if($request->is("/", "login"))
             {
                 return $next($request);
             }
@@ -38,6 +38,6 @@ class IsLogin
                 return redirect()->route("login");
             }
 
-        }*/
+        }
     }
 }

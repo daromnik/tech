@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\Role;
 use Route;
-use Sentinel;
 
 class RolesController extends Controller
 {
@@ -29,9 +28,9 @@ class RolesController extends Controller
     /**
      * Страница списка всех ролей пользователей
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\Response
      */
-    public function list()
+    public function index()
     {
         $roles = Role::all();
         return view("users.roles.list", ["roles" => $roles]);
@@ -40,9 +39,9 @@ class RolesController extends Controller
     /**
      * Страница формы добавления новой роли пользователя
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\Response
      */
-    public function add()
+    public function create()
     {
         $routes = Route::getRoutes()->getRoutesByName();
         $permissions = Role::modifyRoutesData($routes);
@@ -62,7 +61,7 @@ class RolesController extends Controller
         $permissions = array();
         if(!empty($request->permissions))
         {
-            $permissions = Role::modifyPermissionsData($request->permissions);
+            $permissions = json_encode(Role::modifyPermissionsData($request->permissions));
         }
 
         return $permissions;
@@ -71,70 +70,68 @@ class RolesController extends Controller
     /**
      * Обработка данных после заполнения формы добавления роли
      *
-     * @param Request $request
-     * @return $this
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function addPost(Request $request)
+    public function store(Request $request)
     {
         $permissions = $this->validateAndGetPermissions($request);
 
-        Sentinel::getRoleRepository()->createModel()->create([
+        Role::create([
             "slug" => $request->slug,
             "name" => $request->name,
             "permissions" => $permissions,
         ]);
 
         return redirect()
-            ->route('roleList')
+            ->route('roles.index')
             ->withInput();
     }
 
     /**
      * Страница с для редактирования роли
      *
-     * @param int $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param  \App\Models\Role  $role
+     * @return \Illuminate\Http\Response
      */
-    public function edit(int $id)
+    public function edit(Role $role)
     {
-        $role = Sentinel::getRoleRepository()->findById($id);
         $routes = Route::getRoutes()->getRoutesByName();
         $permissions = Role::modifyRoutesData($routes);
 
+        $role->permissions = json_decode($role->permissions, true);
         return view("users.roles.add", ["role" => $role, "permissions" => $permissions]);
     }
 
     /**
      * Обработка запроса на обновление данных роли
      *
-     * @param Request $request
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Role  $role
+     * @return \Illuminate\Http\Response
      */
-    public function editPost(Request $request, int $id)
+    public function update(Request $request, Role $role)
     {
         $permissions = $this->validateAndGetPermissions($request);
 
-        $role = Sentinel::getRoleRepository()->findById($id);
         $role->update([
             "slug" => $request->slug,
             "name" => $request->name,
             "permissions" => $permissions,
         ]);
 
-        return redirect()->route('roleList');
+        return redirect()->route('roles.index');
     }
 
     /**
      * Удаление роли
      *
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  \App\Models\Role  $role
+     * @return \Illuminate\Http\Response
      */
-    public function delete(int $id)
+    public function destroy(Role $role)
     {
-        $role = Sentinel::getRoleRepository()->findById($id);
         $role->delete();
-        return redirect()->route('roleList');
+        return redirect()->route('roles.index');
     }
 }

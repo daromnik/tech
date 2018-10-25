@@ -25,14 +25,14 @@
                     {{ __("messages.users") }}
                 </a>
             </li>
-            {{--@if(Sentinel::inRole("admin"))--}}
-                {{--<li class="nav-item {{ Request::is('roles*') ? 'active' : '' }}">--}}
-                    {{--<a class="nav-link" href="{{ route("roleList") }}">--}}
-                        {{--<span data-feather="user-check"></span>--}}
-                        {{--{{ __("messages.roles") }}--}}
-                    {{--</a>--}}
-                {{--</li>--}}
-            {{--@endif--}}
+            @if(Auth::user()->role->slug == "admin")
+                <li class="nav-item {{ Request::is('roles*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route("roles.index") }}">
+                        <span data-feather="user-check"></span>
+                        {{ __("messages.roles") }}
+                    </a>
+                </li>
+            @endif
             <li class="nav-item {{ Request::is('settings*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route("settings") }}">
                     <span data-feather="settings"></span>

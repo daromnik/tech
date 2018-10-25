@@ -110,7 +110,7 @@
                             <option></option>
                             @foreach($roleUsers["manager"] as $manager)
                                 <option value="{{ $manager->id }}" @if(isset($project) && $project->manager_id == $manager->id) selected @endif>
-                                    {{ $manager->first_name }} {{ $manager->last_name }}
+                                    {{ $manager->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -124,7 +124,7 @@
                             <option></option>
                             @foreach($roleUsers["optimizer"] as $optimizer)
                                 <option value="{{ $optimizer->id }}" @if(isset($project) && $project->optimizer_id == $optimizer->id) selected @endif>
-                                    {{ $optimizer->first_name }} {{ $optimizer->last_name }}
+                                    {{ $optimizer->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -138,7 +138,7 @@
                             <option></option>
                             @foreach($roleUsers["client"] as $client)
                                 <option value="{{ $client->id }}" @if(isset($project) && $project->client_id == $client->id) selected @endif>
-                                    {{ $client->first_name }} {{ $client->last_name }}
+                                    {{ $client->name }}
                                 </option>
                             @endforeach
                         </select>

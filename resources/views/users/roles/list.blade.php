@@ -4,7 +4,7 @@
 
     <h1>{{ __("messages.list_roles") }}</h1>
 
-    <p><a href="{{ route("roleAdd") }}" class="btn btn-primary active" role="button" aria-pressed="true">{{ __("messages.add_role") }}</a></p>
+    <p><a href="{{ route("roles.create") }}" class="btn btn-primary active" role="button" aria-pressed="true">{{ __("messages.add_role") }}</a></p>
 
     <table class="table table-sm table-hover">
         <thead class="thead-dark">
@@ -20,8 +20,8 @@
                 <td>{{ $role->name }}</td>
                 <td>{{ $role->slug }}</td>
                 <td class="text-center">
-                    <a href="{{ route("roleEdit", ["id" => $role->id]) }}"><i data-feather="edit" title="{{ __("messages.edit") }}"></i></a>
-                    <a href="{{ route("roleDelete", ["id" => $role->id]) }}"><i data-feather="x-square" title="{{ __("messages.delete") }}"></i></a>
+                    <a href="{{ route("roles.edit", ["id" => $role->id]) }}"><i data-feather="edit" title="{{ __("messages.edit") }}"></i></a>
+                    <a href="{{ route("roles.destroy", ["id" => $role->id]) }}"><i data-feather="x-square" title="{{ __("messages.delete") }}"></i></a>
                 </td>
             </tr>
         @endforeach

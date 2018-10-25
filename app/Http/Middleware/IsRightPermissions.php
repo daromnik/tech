@@ -3,9 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Sentinel;
 use Redirect;
 use App\Models\Util;
+use Illuminate\Support\Facades\Auth;
 
 class IsRightPermissions
 {
@@ -18,22 +18,24 @@ class IsRightPermissions
      */
     public function handle($request, Closure $next)
     {
-        /*if(!$request->is("/"))
+        if(Auth::check())
         {
             $path = Util::strReplaceSlashToDot($request->route()->uri);
-            if (Sentinel::hasAccess($path))
+            $permissions = json_decode(Auth::user()->role->permissions, true);
+
+            if (array_key_exists($path, $permissions))
             {
                 return $next($request);
             }
             else
             {
-                return Redirect::to('/')->withErrors('Permission denied');
+                return Redirect::back()->withErrors('Permission denied');
             }
         }
         else
         {
             return $next($request);
-        }*/
+        }
 
     }
 }

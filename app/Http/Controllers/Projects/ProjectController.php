@@ -80,7 +80,7 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Project  $project
+     * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
     public function edit(Project $project)

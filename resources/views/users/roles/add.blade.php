@@ -24,9 +24,13 @@
         </div>
     @endif
 
-    <form method="post">
+    <form method="post" action="@if(isset($role)){{ route("roles.update", $role) }}@else{{ route("roles.store") }}@endif">
 
-        {{ csrf_field() }}
+        @csrf
+
+        @if(isset($role))
+            {{ method_field("PUT") }}
+        @endif
 
         <div class="form-group">
             <label for="role-name">{{ __("messages.title") }}</label>
@@ -43,7 +47,7 @@
             @foreach($permissions as $name => $path)
                 @if($name != "login" && $name != "logout")
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="permission-{{ $name }}" name="permissions[{{ $path }}]" @if(isset($role) && isset($role->permissions[$path])) checked @endif>
+                        <input type="checkbox" class="custom-control-input" value="{{ $path }}" id="permission-{{ $name }}" name="permissions[{{ $path }}]" @if(isset($role) && isset($role->permissions[$path])) checked @endif>
                         <label class="custom-control-label" for="permission-{{ $name }}">{{ $name }}</label>
                     </div>
                 @endif
@@ -51,7 +55,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">{{ __("messages.submit") }}</button>
-        <a href="{{ route("roleList") }}" class="btn btn-secondary active" role="button" aria-pressed="true">{{ __("messages.cancel") }}</a>
+        <a href="{{ route("roles.index") }}" class="btn btn-secondary active" role="button" aria-pressed="true">{{ __("messages.cancel") }}</a>
 
     </form>
 

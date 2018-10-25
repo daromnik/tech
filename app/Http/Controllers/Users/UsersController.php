@@ -9,6 +9,8 @@ use Illuminate\Auth\Events\Registered;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -37,8 +39,16 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        $roles = Role::all();
+        $users = Cache::remember('users.all', 60 * 60 * 24, function () {
+            return User::all();
+        });
+
+        $roles = Cache::remember('roles.all', 60 * 60 * 24, function () {
+            return Role::all();
+        });
+
+        //$users = User::all();
+        //$roles = Role::all();
 
         $rolesArr = $roles->mapWithKeys(function ($item) {
             return [$item["id"] => $item["name"]];
@@ -118,6 +128,10 @@ class UsersController extends Controller
         {
             unset($data["password"]);
             unset($data["password_confirmation"]);
+        }
+        else
+        {
+            $data["password"] = Hash::make($data['password']);
         }
 
         $user->update($data);

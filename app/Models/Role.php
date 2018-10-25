@@ -2,23 +2,32 @@
 
 namespace App\Models;
 
-use Sentinel;
-use Cartalyst\Sentinel\Roles\EloquentRole;
+use Illuminate\Database\Eloquent\Model;
 
-class Role extends EloquentRole
+class Role extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'slug', 'name', 'permissions',
+    ];
+
     /**
      * Получить всех пользователей принадлежащих к данной роли
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function users()
     {
-        return $this->belongsToMany("App\Models\User", "role_users");
+        return $this->hasMany("App\Models\User");
     }
 
     /**
-     * Метод для получения
+     * Метод для получения списка ролей в виде ключей и
+     * список пользователей для каждой роли в виде значения
      *
      * @return array
      */
@@ -28,13 +37,17 @@ class Role extends EloquentRole
         $roles = Role::all();
         foreach ($roles as $role)
         {
-            $users = $role->users()->get();
+            $users = $role->users;
             $roleUsers[$role->slug] = $users;
         }
         return $roleUsers;
     }
 
     /**
+     * Метод преобразует данные в нужный формат для записи в базу
+     *
+     * FIXME можно переделать, так как этот метод применялся для старой систмы пользователей Sentinent
+     *
      * @param array $data
      * @return array
      */
@@ -49,16 +62,19 @@ class Role extends EloquentRole
     }
 
     /**
+     * Метод преобразования роутов в нужный формат для вывода
+     * их на странице создания/редактирования ролей
+     *
      * @param array $routes
      * @return array
      */
-    static public function modifyRoutesData(array $routes)
+    static public function modifyRoutesData(array $data)
     {
-        $permissions = array();
-        foreach($routes as $name => $route)
+        $routes = array();
+        foreach($data as $name => $route)
         {
-            $permissions[$name] = Util::strReplaceSlashToDot($route->uri);
+            $routes[$name] = Util::strReplaceSlashToDot($route->uri);
         }
-        return $permissions;
+        return $routes;
     }
 }

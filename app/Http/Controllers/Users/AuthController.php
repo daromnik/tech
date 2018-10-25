@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Users;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Cartalyst\Sentinel\Checkpoints\NotActivatedException;
-use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class AuthController extends Controller
