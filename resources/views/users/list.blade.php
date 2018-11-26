@@ -22,8 +22,16 @@
                 <td>{{ $user->email }}</td>
                 <td>{{ $roles[$user->role_id] }}</td>
                 <td>
-                    <a href="{{ route("users.edit", ["id" => $user->id]) }}"><i data-feather="edit" title="{{ __("messages.edit") }}"></i></a>
-                    <a href="{{ route("users.destroy", ["id" => $user->id]) }}"><i data-feather="x-square" title="{{ __("messages.delete") }}"></i></a>
+                    <form action="{{ route("users.destroy", $user) }}" method="post">
+
+                        {{ csrf_field() }}
+                        {{ method_field("DELETE") }}
+
+                        <a href="{{ route("users.edit", ["id" => $user->id]) }}"><i data-feather="edit" title="{{ __("messages.edit") }}"></i></a>
+                        <button type="submit" class="btn btn-link p-0">
+                            <i type="submit" data-feather="x-square" title="{{ __("messages.delete") }}"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
         @endforeach

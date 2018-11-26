@@ -17,16 +17,16 @@ class IndicatorTest extends TestCase
      */
     public function testListIndicators()
     {
-        $user = \App\Models\User::find(1);
-
-        //$user = factory(App\User::class)->create();
-
-        $response = $this->actingAs($user)->get('/indicators');
-           // ->see('FUCK');
-        //$response = $this->get('/indicators');
-
-        $response->assertStatus(200);
-
+//        $user = \App\Models\User::find(1);
+//
+//        //$user = factory(App\User::class)->create();
+//
+//        $response = $this->actingAs($user)->get('/indicators');
+//           // ->see('FUCK');
+//        //$response = $this->get('/indicators');
+//
+//        $response->assertStatus(200);
+//
 
 
     }
